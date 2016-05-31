@@ -1,0 +1,6 @@
+<msg>
+   <type>deleteLmFpl</type>
+   <deleteLmFpl>
+      <lmFplId>1</lmFplId>
+   </deleteLmFpl>
+</msg>

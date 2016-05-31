@@ -1,0 +1,44 @@
+<msg>
+   <type>insertLmFpl</type>
+   <lmFplId>17</lmFplId>
+      <basicFplData>
+         <acftId>BTI03X</acftId>
+         <adep>EYPA</adep>
+         <ades>EVRA</ades>
+         <eobt>0540</eobt>
+         <eobtDate>2014-08-29</eobtDate>
+     </basicFplData>
+     <routePointInformation>
+         <noOfRoutePoints>3</noOfRoutePoints>
+         <routePoint ix="0">
+              <absoluteTimePointPassed>20351
+                      </absoluteTimePointPassed>
+              <datePointPassed>2014-08-29</datePointPassed>
+              <pointName>DOBOK</pointName>
+              <Latitude>47.493333333</Latitude>
+              <Longitude>27.469444444</Longitude>
+              <firstRelatedSector>OUTSIDE</firstRelatedSector>
+              <secondRelatedSector>WEST</secondRelatedSector>
+         </routePoint>
+         <routePoint ix="1">
+              <absoluteTimePointPassed>20411
+                      </absoluteTimePointPassed>
+              <datePointPassed>2014-08-29</datePointPassed>
+              <pointName>BUSES</pointName>
+              <Latitude>46.92583333</Latitude>
+              <Longitude>28.10611111</Longitude>
+              <firstRelatedSector>WEST</firstRelatedSector>
+              <secondRelatedSector>EAST</secondRelatedSector>
+         </routePoint>
+         <routePoint ix="2">
+              <absoluteTimePointPassed>20620
+                      </absoluteTimePointPassed>
+              <datePointPassed>2014-08-29</datePointPassed>
+              <pointName></pointName>
+              <Latitude>46.9277992249</Latitude>
+              <Longitude>28.9307994843</Longitude>
+              <firstRelatedSector>EAST</firstRelatedSector>
+              <secondRelatedSector>CONTROL</secondRelatedSector>
+         </routePoint>
+     </routePointInformation>
+</msg>

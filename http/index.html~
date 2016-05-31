@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+
+    <body>
+        <img src="img/top_img.jpg" alt="">
+           <h2>Example code</h2>
+	   <p>
+	     These are just examples how we can connect to the websocket interface ws://localhost:7681/xxx and subscribe to the "snowbar" subprotocol and draw the received data in the browser. 
+	   </p>
+           <h3>Demo graph</h3>
+           <p>
+                    This shows the load per sector
+                    </p>
+                    <p><a  href="graph.html"> A demo graph</a></p>
+
+           <h3>Simple Map</h3>
+                    <p><a  href="map.html"> A simple map </a></p>
+
+
+            <footer>
+                <p> (c) 2014 SiATM </p>
+            </footer>
+
+
+    </body>
+</html>
