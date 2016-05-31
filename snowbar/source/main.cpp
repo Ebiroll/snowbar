@@ -115,16 +115,17 @@ void parseFile(std::string fileName)
           fs.close();
     } else
     {
-        std::cerr << "No such file exists yet" << fileName << std::endl  ;
+        std::cerr << "No such file exists yet " << fileName << std::endl  ;
 
     }
 }
 
 //-----------------------------------------------------------------------------
-// sendData, sends data as XML on websocket
+// gets data for sending on single socket
 //-----------------------------------------------------------------------------
-void sendData() {
+std::string getData() {
 
+  std::string ret;
     try {
         std::vector<XMLToken> myXml;
         myXml.clear();
@@ -142,8 +143,7 @@ void sendData() {
             }
         }
         XMLNode total(myXml.begin(),myXml.end()-1);
-        std::string test=total.toString();
-        sendDataOnSockets(test.c_str(),strlen(test.c_str()-1));
+        ret=total.toString();
     } catch (XMLException e)
     {
         std::cerr << "Caught Xml exception "  << e.what();
@@ -152,6 +152,17 @@ void sendData() {
     {
         std::cerr <<  "An exception has occurred: " << e.what();
     }
+
+    return ret;
+}
+
+//-----------------------------------------------------------------------------
+// sendData, sends data as XML on websocket
+//-----------------------------------------------------------------------------
+void sendData() {
+
+  std::string data=getData();
+  sendDataOnSockets(data.c_str(),strlen(data.c_str()));
 
 }
 

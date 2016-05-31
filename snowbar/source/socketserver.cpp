@@ -14,6 +14,7 @@
 // Sends all data on connect, defined in main.cpp
 extern   void sendData();
 
+extern  std::string getData();
 
 
 typedef struct
@@ -396,7 +397,9 @@ void pollSocket()
                             if (gWaitForUpgrade)
                             {
                                 // Upgrade complete now we send the data
-                                sendData();
+			      std::string data=getData();
+			      sendDataOnOneSocket(gPeerStreams[j]->peerStream,data.c_str(),data.length());
+
                             }
 
                         }
