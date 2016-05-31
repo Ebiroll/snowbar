@@ -17,7 +17,7 @@
 #include <fstream>
 #include <chrono>
 
-
+//#define TEST 1
 
 //-----------------------------------------------------------------------------
 // Global data
@@ -25,7 +25,7 @@
 
 int gPort=7681;
 
-std::string gFileName=std::string("test.txt");
+std::string gFileName=std::string("dir/test.txt");
 
 
 /// Struct to store data
@@ -40,11 +40,11 @@ std::vector<itemData> gData;
 
 
 
+#ifdef HAVE_CHRONO
 
 //-----------------------------------------------------------------------------
 // simple timer class
 //-----------------------------------------------------------------------------
-
 struct timer
 {
     typedef std::chrono::steady_clock clock ;
@@ -57,7 +57,7 @@ struct timer
 
     private: clock::time_point start = clock::now() ;
 };
-
+#endif
 
 //-----------------------------------------------------------------------------
 // fileExists, returns true if file exists
@@ -126,11 +126,12 @@ void parseFile(std::string fileName)
 std::string getData() {
 
   std::string ret;
+  std::vector<XMLToken> myXml;
     try {
-        std::vector<XMLToken> myXml;
         myXml.clear();
         {
-            XmlLazyTag myTag("data", myXml);
+            XMLToken myTag("data",START_TAG);
+            myXml.push_back(myTag);
 
             for (int i=0;i<gData.size();i++)
             {
@@ -141,6 +142,8 @@ std::string getData() {
                     Serialize("value",gData[i].value.c_str(),myXml);
                 }
             }
+            XMLToken endTag("data",END_TAG);
+            myXml.push_back(endTag);
         }
         XMLNode total(myXml.begin(),myXml.end()-1);
         ret=total.toString();
@@ -153,6 +156,7 @@ std::string getData() {
         std::cerr <<  "An exception has occurred: " << e.what();
     }
 
+  std::cout << "xml" << ret << "\n\n exml";
     return ret;
 }
 
@@ -180,9 +184,12 @@ public:
     void handleFileAction(FW::WatchID watchid, const FW::String& dir, const FW::String& filename,
         FW::Action action)
     {
-        std::cout << "DIR (" << dir + ") FILE (" + filename + ") has event " << action << std::endl;
-        parseFile(gFileName);
-        sendData();
+        //std::cout << "DIR (" << dir + ") FILE (" + filename + ") has event " << action << std::endl;
+        //if (filename == gFileName)
+        {
+            parseFile(gFileName);
+            sendData();
+        }
     }
 };
 
@@ -227,7 +234,7 @@ mainLoop (int argc, char *argv[])
         parseFile(gFileName);
 
         // add a watch to the system
-        FW::WatchID watchID = fileWatcher.addWatch(gFileName.c_str(), new UpdateListener(), true);
+        FW::WatchID watchID = fileWatcher.addWatch("dir", new UpdateListener(), true);
 
         std::cout << "\n\nPress ^C to exit" << std::endl;
 
@@ -274,14 +281,24 @@ main (int argc, char **argv)
   myXml.clear();
 
   {
-      XmlLazyTag myTag("data", myXml);
+      XMLToken myTag("data",START_TAG);
+      myXml.push_back(myTag);
       {
           XmlLazyTag myTag("item", myXml);
           Serialize("label","#A",myXml);
           Serialize("colour","RED",myXml);
           Serialize("value","12",myXml);
       }
+      XMLToken endTag("data",END_TAG);
+      myXml.push_back(endTag);
+
   }
+
+  for (int q=0;q<myXml.size();q++)
+  {
+      std::cout << "\nmyXml ==" <<  q <<  myXml[q].toString();
+  }
+
 
   try {
       XMLNode total(myXml.begin(),myXml.end()-1);

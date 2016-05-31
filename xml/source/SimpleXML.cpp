@@ -31,11 +31,11 @@ using std::endl;
  */
 static bool
 isWhiteSpace (char ch) {
-  if ((ch == ' ') ||  
-      (ch == '\t') ||  
-      (ch == '\n')) 
-    return true; 
-  return false; 
+  if ((ch == ' ') ||
+      (ch == '\t') ||
+      (ch == '\n'))
+    return true;
+  return false;
 }
 
 /**
@@ -244,7 +244,7 @@ XMLNode::XMLNode(const XMLNode& x) {
 *                            tags and it's a tag (i.e. orphaned tag)
 *                      or if a tag nests both child tags and a data element
 */
-void 
+void
 XMLNode::build(vector<XMLToken>::iterator tstart,
                vector<XMLToken>::iterator tend) {
 
@@ -265,7 +265,7 @@ XMLNode::build(vector<XMLToken>::iterator tstart,
        << "last token is not XML tag " << tstart->toString() << " End " ;
      throw XMLException(ss.str());
   }
-	
+
   // first and last tokens are known to be tags now
   if (tstart->getName() != last->getName()) {
     stringstream ss;
@@ -281,7 +281,7 @@ XMLNode::build(vector<XMLToken>::iterator tstart,
   }
 
   // if we get this far, first and last tags are present, there's nothing
-  // else before/after them and they match each other, and the final 
+  // else before/after them and they match each other, and the final
   // tag is a valid closing tag
   this->tagName = tstart->getName();
 
@@ -296,7 +296,7 @@ XMLNode::build(vector<XMLToken>::iterator tstart,
          << "Reason: XMLToken appears to contain an orphan tag";
       throw XMLException(ss.str());
     }
-    this->data = (tstart+1)->toString(); 
+    this->data = (tstart+1)->toString();
   }
   // okay, it's definitely other tag pairs
   else {
@@ -313,11 +313,11 @@ XMLNode::build(vector<XMLToken>::iterator tstart,
       vector<XMLToken>::iterator childEnd = childStart + 1;
       while ((!childEnd->isTag()) ||
              (childEnd->getName() != childStart->getName())) childEnd++;
-			
+
       // build child tree
       this->children.push_back(new XMLNode(childStart, childEnd));
 
-      childStart = childEnd + 1;	
+      childStart = childEnd + 1;
     }
   }
 }
@@ -331,11 +331,11 @@ XMLNode::build(vector<XMLToken>::iterator tstart,
  * nodes, not references to them, so this cannot be used to mess around with
  * the underlying data
  */
-std::vector<XMLNode> 
+std::vector<XMLNode>
 XMLNode::getChildren(const std::string& tagname) const {
   std::vector<XMLNode> res;
   for (size_t i=0; i<this->numChildren(); i++) {
-    if (this->children[i]->getTagName() == tagname) 
+    if (this->children[i]->getTagName() == tagname)
       res.push_back(*(this->children[i]));
   }
   return res;
@@ -348,7 +348,7 @@ XMLNode::getChildren(const std::string& tagname) const {
  * nodes, not references to them, so this cannot be used to mess around with
  * the underlying data
  */
-std::vector<XMLNode> 
+std::vector<XMLNode>
 XMLNode::getChildren() const {
   std::vector<XMLNode> r;
   size_t n = this->numChildren();
@@ -361,7 +361,7 @@ XMLNode::getChildren() const {
  * \param tab This is used for formatting. All lines will be tabbed in by
  *            this many tabs. Nested XMLNodes will be tabbed in by tab+1, etc.
  */
-string 
+string
 XMLNode::toStringPretty(size_t tab) const {
   //string tabs(tab,'\t');
   string tabs="";
@@ -371,7 +371,7 @@ XMLNode::toStringPretty(size_t tab) const {
       ss << "" <<  this->data << "";   //Data should not have extra spaces
    }
   else {
-      for (size_t i=0; i<this->children.size(); i++) 
+      for (size_t i=0; i<this->children.size(); i++)
         ss << std::endl << this->children[i]->toStringPretty(tab+1);
   }
   ss << tabs << "</" << this->tagName << ">";  // << endl

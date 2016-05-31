@@ -14,6 +14,7 @@
 // Sends all data on connect, defined in main.cpp
 extern   void sendData();
 
+// get data to send after upgrade, defined in main.cpp
 extern  std::string getData();
 
 
@@ -27,19 +28,15 @@ typedef struct
 std::vector<clientState*> gPeerStreams;
 ic::TCPSocket* gServerSocket=NULL;
 
-///////////// Test data //////////////
-char *gTestData=NULL;
-int gTestDataLen=0;
-std::vector<FILE *>testfile;
-std::vector<char *>testData;
-std::vector<int> testDataLen;
-#define NO_OF_TESTFILES 10
-/////////////////////////////////////
 
 // If this is set an upgrade is required before sending data
 bool gWaitForUpgrade=false;
 
 #ifndef WIN32
+//-----------------------------------------------------------------------------
+// _kbhit()
+// Poll keyboard and return number of bytes waiting
+//-----------------------------------------------------------------------------
 int _kbhit() {
     static const int STDIN = 0;
     static bool initialized = false;
@@ -60,6 +57,10 @@ int _kbhit() {
 }
 #endif
 
+//-----------------------------------------------------------------------------
+// void sendDataOnOneSocket(ic::SimpleTCPStream* ss,const char *data,int lenn)
+// Send data with websocket server
+//-----------------------------------------------------------------------------
 void sendDataOnOneSocket(ic::SimpleTCPStream* ss,const char *data,int len)
 {
 
@@ -143,9 +144,18 @@ int socket_main(int argc, char **argv,int port,bool webClient)
 #endif
 
 
-
     InetAddress addr("0.0.0.0");
     gServerSocket=new ic::TCPSocket(addr,port);
+
+#if 0
+    ///////////// Test data //////////////
+
+    char *gTestData=NULL;
+    int gTestDataLen=0;
+    std::vector<FILE *>testfile;
+    std::vector<char *>testData;
+    std::vector<int> testDataLen;
+    #define NO_OF_TESTFILES 10
 
 
     testfile.resize(NO_OF_TESTFILES);
@@ -177,24 +187,31 @@ int socket_main(int argc, char **argv,int port,bool webClient)
             //testData[j]=testData[j];
 
             testDataLen[j]=totalBytes;
-
             bytesread=fread(testData[j],totalBytes,1,testfile[j]);
             char *tmp=testData[j];
             tmp[totalBytes]=0;
         }
     }
+    /////////////////////////////////////
 
+#endif
 
     return 1;
 }
-//////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////
+
 extern "C" unsigned char *SHA1(const unsigned char *d, size_t n, unsigned char *md);
 
 extern "C" int lws_b64_encode_string(const char *in, int in_len, char *out, int out_size);
 
+////////////////////////////////////////////////////////////////////////////////////
 
-int
-handshake_0405(char *inbuffer,char *outbuffer)
+//-----------------------------------------------------------------------------
+// handshake_0405(char *inbuffer,char *outbuffer)
+// Looks for Sec-WebSocket-Key: in input
+//-----------------------------------------------------------------------------
+int handshake_0405(char *inbuffer,char *outbuffer)
 {
     unsigned char simpleBuffer[1024];
 
@@ -236,7 +253,7 @@ handshake_0405(char *inbuffer,char *outbuffer)
                 "%s258EAFA5-E914-47DA-95CA-C5AB0DC85B11",
                 mykey);
 
-    printf("FOUND:::::::::::%s",simpleBuffer);
+    printf("FOUND:::%s",simpleBuffer);
 
     SHA1(simpleBuffer, n, hash);
 
@@ -261,33 +278,23 @@ handshake_0405(char *inbuffer,char *outbuffer)
     strcat(p, (char *)simpleBuffer);
     p += accept_len;
 
-    strcat(p, "\x0d\x0aSec-WebSocket-Protocol: load-monitor");
+    strcat(p, "\x0d\x0aSec-WebSocket-Protocol: snowbar");
 
-
-//    n = lws_hdr_copy(wsi, p, 128, WSI_TOKEN_PROTOCOL);
-//        if (n < 0)
-//            goto bail;
-//        p += n;
 
     /* end of response packet */
 
-        strcat(p, "\x0d\x0a\x0d\x0a");
+    strcat(p, "\x0d\x0a\x0d\x0a");
 
-        /* okay send the handshake response accepting the connection */
+    /* okay send the handshake response accepting the connection */
 
-        printf("issuing resp pkt %d len\n", (int)(p - response));
+    printf("issuing resp pkt %d len\n", (int)(p - response));
 #ifdef DEBUG
         fwrite(response, 1,  p - response, stderr);
 #endif
-//        n = libwebsocket_write(wsi, (unsigned char *)response,
-//                          p - response, LWS_WRITE_HTTP);
-
 
     printf("Responding %s",response);
     strcpy(outbuffer,response);
     /* alright clean up and set ourselves into established state */
-
-
 
     return 0;
 
@@ -304,7 +311,6 @@ bail:
 
 
 
-//
 
 //-----------------------------------------------------------------------------
 // void sendInsertOneByOne()
@@ -344,7 +350,8 @@ void pollSocket()
             {
 
                 // Send the current parsed list
-                sendData();
+                std::string data=getData();
+                sendDataOnOneSocket(tmp->peerStream,data.c_str(),data.length());
             }
         }
     }
@@ -364,7 +371,7 @@ void pollSocket()
                 }
                 catch (ic::SockException &exep)
                 {
-                    std::cout << exep.what();
+                    std::cout << "SocketException " << exep.what();
                     if (exep.mError==ic::errTimeout)
                     {
                        readBytes=47;
@@ -372,7 +379,7 @@ void pollSocket()
                 }
                 catch(...)
                 {
-
+                    std::cout << "Exception on read \n";
                     // Catch other than timeout
                 }
                 printf("Received %s",Buff);
@@ -397,9 +404,8 @@ void pollSocket()
                             if (gWaitForUpgrade)
                             {
                                 // Upgrade complete now we send the data
-			      std::string data=getData();
-			      sendDataOnOneSocket(gPeerStreams[j]->peerStream,data.c_str(),data.length());
-
+                                std::string data=getData();
+                                sendDataOnOneSocket(gPeerStreams[j]->peerStream,data.c_str(),data.length());
                             }
 
                         }
@@ -427,16 +433,11 @@ void pollSocket()
                 delete gPeerStreams[j];
                 gPeerStreams[j]=NULL;
             }
-
         }
-
-
-
-
     }
 
 #if 0
-
+// Poll testdata and sent it on keyhit
     if (_kbhit())
     {
         char c=getchar();
@@ -459,81 +460,7 @@ void pollSocket()
                 sendDataOnSockets(gTestData,gTestDataLen);
             }
             break;
-        case '2':
-            {
-                gTestData=testData[2];
-                gTestDataLen=testDataLen[2];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '3':
-            {
-                gTestData=testData[3];
-                gTestDataLen=testDataLen[3];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '4':
-            {
-                gTestData=testData[4];
-                gTestDataLen=testDataLen[4];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '5':
-            {
-                gTestData=testData[5];
-                gTestDataLen=testDataLen[5];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '6':
-            {
-                gTestData=testData[6];
-                gTestDataLen=testDataLen[6];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '7':
-            {
-                gTestData=testData[7];
-                gTestDataLen=testDataLen[7];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '8':
-            {
-                gTestData=testData[8];
-                gTestDataLen=testDataLen[8];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-        case '9':
-            {
-                gTestData=testData[9];
-                gTestDataLen=testDataLen[9];
-                printf(gTestData);
-                sendDataOnSockets(gTestData,gTestDataLen);
-                //libwebsocket_callback_on_writable_all_protocol(&protocols[PROTOCOL_FLIGHT_SERVER]);
-            }
-            break;
-
         }
-
     }
 #endif
 

@@ -38,11 +38,14 @@
 
 <script>
 
+    var newdata = [1, 2, 3, 4];  // New data arriving over websocket
+    var domain  = ["A", "B", "C", "D"];  // New data arriving over websocket
+
     angular.module('charts', [])
         .controller('mainCtrl', function AppCtrl ($scope) {
-            $scope.options = {width: 1000, height: 250, 'bar': 'aaa' , sector : "AccMiddle"};
-            $scope.newdata  = [1, 2, 3, 4];  // New data arriving over websocket
+            $scope.options = {width: 1000, height: 250, 'bar': 'aaa' ,sector : "AccMiddle"};
             $scope.data = [1, 2, 3, 4];
+            $scope.dumain = [1, 2, 3, 4];
             $scope.hovered = function(d){
                 $scope.barValue = d;
                 $scope.$apply();
@@ -81,23 +84,9 @@
                 restrict: 'E',
                 replace: true,
                 controller: function AppCtrl ($scope) {
-                    $scope.update = function(d, i){  $scope.data = $scope.newdata; console.log(i); };
+                    $scope.update = function(d, i){  $scope.data = filterData(); console.log("updated",newdata); };
                     function filterData(){
-
-                        var arrayOfData=new Array();
-
-                        var t;
-                        // Loop time 0 - 24 hours
-                        for (t=0;t<24;t++)
-                        {
-                            arrayOfData.push(t);
-
-                        }
-
-                        console.log(arrayOfData);
-                        return (arrayOfData);
-
-                        //return d3.range(~~(Math.random()*50)+1).map(function(d, i){return ~~(Math.random()*1000);});
+                        return (newdata);
                     }
                 },
                 template: '<div class="form">' +
@@ -120,7 +109,7 @@
   function initWebSocket()
   {
     var ws = window.WebSocket || window.MozWebSocket;
-    websocket = new ws(wsUri,"load-monitor");
+    websocket = new ws(wsUri,"snowbar");
     websocket.onopen = function(evt) { onOpen(evt) };
     websocket.onclose = function(evt) { onClose(evt) };
     websocket.onmessage = function(evt) { onMessage(evt) };
@@ -130,7 +119,6 @@
   function onOpen(evt)
   {
     writeToScreen("CONNECTED");
-    //doSend("WebSocket rocks");
   }
 
   function onClose(evt)
@@ -140,20 +128,16 @@
 
   function onMessage(evt)
   {
-      // document.write("<table border='1'>");
     //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
+    parseMessageReceived(evt.data);
 
     var appElement = document.querySelector("[ng-controller=mainCtrl]");
     var $scope = angular.element(appElement).scope();
-
-    parseMessageReceived(evt.data,$scope.newdata);
-
-    $scope.$apply(function()
-    {
+    $scope.$apply(function(){
         $scope.update();
     });
-
-    //websocket.close();
+    // Workaround since values are not redrawn properly
+    $scope.options.height=Number($scope.options.height)+1;
   }
 
   function onError(evt)
@@ -168,7 +152,7 @@
   }
 
 
-  function parseMessageReceived(message,data)
+  function parseMessageReceived(message)
   {
     var tmpTxt="";
     var xmlDoc;
@@ -189,9 +173,8 @@
         var items=xmlDoc.getElementsByTagName("item");
 
         // Clear data
-        data.length = 0;
-
-        var arrayOfData=new Array();
+        newdata.length = 0;
+        domain.length = 0;
 
         for (i=0;i<items.length-1;i++) {
 
@@ -200,11 +183,14 @@
 
              var value=Number(items[i].getElementsByTagName("value")[0].childNodes[0].nodeValue);
              console.log(value);
+             newdata.push(Number(value));
 
-             if (value) data.push(Number(value));
+             var label=items[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
+             domain.push(label);
         }
-
+        console.log("Done parse");
     }
+
     var pre = document.createElement("p");
     pre.style.wordWrap = "break-word";
 
