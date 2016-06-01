@@ -38,16 +38,16 @@
 
 <script>
 
-    var newdata = [1, 2, 3, 4];  // New data arriving over websocket
-    var labels  = ["A", "B", "C", "D"];  // label data arriving over websocket
-    var barcolors  = ["red", "green", "blue", "orange"];  // New data arriving over websocket
+    var newdata = [1];  // New data arriving over websocket
+    var labels  = ["A"];  // label data arriving over websocket
+    var barcolors  = ["red"];  // New data arriving over websocket
 
     angular.module('charts', [])
         .controller('mainCtrl', function AppCtrl ($scope) {
             $scope.options = {width: 1000, height: 250, 'bar': 'aaa' ,sector : "AccMiddle"};
-            $scope.data = [1, 2, 3, 4];
-            $scope.labels= [1, 2, 3, 4];
-            $scope.barcolors  = ["red", "green", "blue", "orange"];
+            $scope.data = [1];
+            $scope.labels= [1];
+            $scope.barcolors  = ["red"];
             $scope.hovered = function(d){
                 $scope.barValue = d;
                 $scope.$apply();
