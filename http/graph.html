@@ -39,14 +39,15 @@
 <script>
 
     var newdata = [1, 2, 3, 4];  // New data arriving over websocket
-    var domain  = ["A", "B", "C", "D"];  // label data arriving over websocket
-    var barcolors  = ["red", "green", "blue", "white"];  // New data arriving over websocket
+    var labels  = ["A", "B", "C", "D"];  // label data arriving over websocket
+    var barcolors  = ["red", "green", "blue", "orange"];  // New data arriving over websocket
 
     angular.module('charts', [])
         .controller('mainCtrl', function AppCtrl ($scope) {
             $scope.options = {width: 1000, height: 250, 'bar': 'aaa' ,sector : "AccMiddle"};
             $scope.data = [1, 2, 3, 4];
-            $scope.dumain = [1, 2, 3, 4];
+            $scope.labels= [1, 2, 3, 4];
+            $scope.barcolors  = ["red", "green", "blue", "orange"];
             $scope.hovered = function(d){
                 $scope.barValue = d;
                 $scope.$apply();
@@ -175,7 +176,7 @@
 
         // Clear data
         newdata.length = 0;
-        domain.length = 0;
+        labels.length = 0;
         barcolors.length =0;
 
         for (i=0;i<items.length-1;i++) {
@@ -188,7 +189,7 @@
              newdata.push(Number(value));
 
              var label=items[i].getElementsByTagName("label")[0].childNodes[0].nodeValue;
-             domain.push(label);
+             labels.push(label);
 
              var colour=items[i].getElementsByTagName("colour")[0].childNodes[0].nodeValue;
              barcolors.push(colour);

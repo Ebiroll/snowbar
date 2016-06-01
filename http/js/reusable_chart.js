@@ -1,5 +1,7 @@
 d3.custom = {};
 
+// Good tutorial, http://vadim.ogievetsky.com/IntroD3/#1
+
 d3.custom.barChart = function module() {
     var margin = {top: 20, right: 20, bottom: 40, left: 40},
         width = 1024,
@@ -27,7 +29,7 @@ d3.custom.barChart = function module() {
                 .scale(x1)
                 .orient('bottom')
                 .tickFormat(function(d, i){
-                    return domain[d];
+                    return labels[d];
                  });
 
             var yAxis = d3.svg.axis()
@@ -71,10 +73,10 @@ d3.custom.barChart = function module() {
             bars.enter().append('rect')
                 .classed('bar', true)
                 .attr({x: chartW,
-                    width: barW,
-                    y: function(d, i) { return y1(d); },
-                    height: function(d, i) { return chartH - y1(d); },
-                    fill: function(d,i) {return barcolors[i]}  // barcolors[i]
+                       width: barW,
+                       y: function(d, i) { return y1(d); },
+                       height: function(d, i) { return chartH - y1(d); },
+                       fill: function(d,i) { console.log(barcolors,i); return barcolors[i]}  // barcolors[i]
                 })
                 .on('mouseover', dispatch.customHover);
             bars.transition()

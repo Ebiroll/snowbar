@@ -3,6 +3,7 @@ PROJECT(snowbar)
 #SET (CMAKE_BUILD_TYPE Release)
 SET (CMAKE_BUILD_TYPE Debug)
 
+enable_testing()
 
 
 IF(WIN32)
@@ -17,17 +18,20 @@ json/include
 xml/include
 filewatcher/include
 snowbar/include
+gtest
+gtest/include
 )
 
 SET (LIBRARY_TYPE STATIC)
 
+ADD_LIBRARY(GTest
+gtest/src/gtest-all.cc
+)
 
 
-ADD_LIBRARY(jsoncpp
-json/source/json_reader.cpp
-json/source/json_value.cpp
-json/source/json_writer.cpp
-json/json/json_serialize.hpp
+ADD_LIBRARY(GTestMain
+gtest/src/gtest-all.cc
+gtest/src/gtest_main.cc
 )
 
 
@@ -62,14 +66,37 @@ xml/include/SimpleXML.hpp
 )
 
 
+
+
 IF(WIN32)
 TARGET_LINK_LIBRARIES(snowbar filewatcher ws2_32.lib)
 ELSE(WIN32)
 TARGET_LINK_LIBRARIES(snowbar filewatcher z rt)
 ENDIF(WIN32)
 
+add_executable(testFunctions
+gtest/src/gtest-all.cc
+gtest/src/gtest_main.cc
+test/Functions.cpp
+test/Functions_tests.cpp
+)
+
+TARGET_LINK_LIBRARIES(testFunctions pthread)
 
 
+add_test(test1 testFunctions)
+
+#add_custom_command(TARGET testFunctions
+#                   POST_BUILD
+#                   COMMAND  ctest --output-on-failure 1>&2 )
+
+add_custom_command(TARGET testFunctions
+                   POST_BUILD
+                   COMMAND testFunctions )
+
+
+
+add_custom_target(unittest  ${PROJECT_NAME})
 
 ADD_DEFINITIONS(-D NOTHING_To_DEFINE_FOR_NOW )
 
