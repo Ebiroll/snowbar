@@ -10,7 +10,10 @@
 namespace
 {
     // Reverses a string.
-    std::string ReverseString(const std::string& s);
+    std::string ReverseString(const std::string& s) {
+
+        return ("Hello");
+    }
 
     // Calculates the Nth fibonacci number.
     int CalculateNthFibonacciNumber(int n);

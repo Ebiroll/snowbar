@@ -1,4 +1,5 @@
 #include "gtest/gtest.h"
+#include "functions.h"
 
 TEST(StringTest,sillyTest)
 {
@@ -9,8 +10,32 @@ TEST(StringTest,sillyTest)
 }
 
 
+
 TEST(MathTest, TwoPlusTwoEqualsFour) {
         int i=17;
         EXPECT_EQ(2 + 2, 4) << "Text with better explanation" ;
         EXPECT_TRUE(i==17) << "i was not 17 it was " << i;
+}
+
+
+
+TEST(ReverseString,reverse1)
+{
+    std::string test=std::string("This is just a silly example");
+    std::string expected_result=std::string("elpmaxe yllis a tsuj si sihT");
+
+    std::string result=ReverseString(test);
+
+    EXPECT_EQ(expected_result,result);
+
+}
+
+TEST(ReverseString,reverse2)
+{
+    std::string test=std::string("s");
+    std::string expected_result=std::string("s");
+
+    std::string result=ReverseString(test);
+
+    EXPECT_EQ(expected_result,result);
 }
