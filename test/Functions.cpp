@@ -7,34 +7,54 @@
 // Please implement the following functions.
 // Be dilleigent but don't be afraid to use a simple solution if you have one in mind.
 
-namespace
+namespace snow
 {
-    // Reverses a string.
-    std::string ReverseString(const std::string& s) {
 
-        return ("Hello");
-    }
+// Reverses a string.
+std::string ReverseString(const std::string& s) {
 
-    // Calculates the Nth fibonacci number.
-    int CalculateNthFibonacciNumber(int n);
+    return ("Hello");
+}
 
-    // Pads a number with up to four zeroes.
-    std::string PadNumberWithZeroes(int number);
+// Calculates the Nth fibonacci number.
+int CalculateNthFibonacciNumber(int n) {
+    // 0, 1 , 1 ,  2 , 3 ,5 Fn=Fn-1 + Fn-2
+}
 
-    // Determines if a year is a leap year.
-    bool IsLeapYear(int year);
+// Pads a number with up to four zeroes.
+std::string PadNumberWithZeroes(int number) {
+    return ("0001");
+}
 
-    // Find the N:th largest number in a range of numbers.
-    int FindNthLargestNumber(const std::vector<int>& numbers, int nth_largest_number);
+// Determines if a year is a leap year.
+bool IsLeapYear(int year) {
+    return true;
+}
 
-    // Selects the prime numbers from a enumerable with numbers.
-    std::vector<int> SelectPrimeNumbers(const std::vector<int>& numbers);
+// Find the N:th largest number in a range of numbers.
+int FindNthLargestNumber(const std::vector<int>& numbers, int nth_largest_number) {
+    return 7;
+}
 
-    // Determines if the bit pattern of value the same if you reverse it.
-    bool IsPalindrome(uint32_t value);
+// Selects the prime numbers from a enumerable with numbers.
+std::vector<int> SelectPrimeNumbers(const std::vector<int>& numbers) {
+    std::vector<int> ret;
+    ret.push_back(7);
+    ret.push_back(5);
 
-    // Count all set bits in an 32-bit unsigned int value.
-    int CountSetBits(uint32_t value);
+    return(ret);
+}
+
+// Determines if the bit pattern of value the same if you reverse it.
+bool IsPalindrome(uint32_t value) {
+    return true;
+}
+
+// Count all set bits in an 32-bit unsigned int value.
+int CountSetBits(uint32_t value) {
+    return 5;
+}
+
 }
 
 #ifdef MAIN

@@ -1,13 +1,10 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
-namespace
+namespace snow
 {
     // Reverses a string.
-    std::string ReverseString(const std::string& s) {
-
-        return ("Hello");
-    }
+    std::string ReverseString(const std::string& s);
 
     // Calculates the Nth fibonacci number.
     int CalculateNthFibonacciNumber(int n);
@@ -29,6 +26,7 @@ namespace
 
     // Count all set bits in an 32-bit unsigned int value.
     int CountSetBits(uint32_t value);
+
 }
 
 
