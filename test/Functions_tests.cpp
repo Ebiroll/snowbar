@@ -134,7 +134,7 @@ TEST(FindNthLargestNumber,test1)
 
     int result=FindNthLargestNumber(testData,2);
 
-    EXPECT_EQ(expectedResult,4);
+    EXPECT_EQ(expectedResult,result);
 
 }
 
