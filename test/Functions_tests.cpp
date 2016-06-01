@@ -22,19 +22,58 @@ TEST(MathTest, TwoPlusTwoEqualsFour) {
 
 
 TEST(CalculateNthFibonacciNumber,test1) {
-    // 0, 1 , 1 ,  2 , 3 ,5, 8
+    // 0, 1 , 1 ,  2 , 3 ,5, 8, 13, 21
 
-    int res=CalculateNthFibonacciNumber(3);
-    EXPECT_EQ(res,2);
+    for (int i=0;i<10;i++) {
+        std::cout << CalculateNthFibonacciNumber(i) << "," ;
+    }
 
-    res=CalculateNthFibonacciNumber(0);
-    EXPECT_EQ(res,2);
+    int res=CalculateNthFibonacciNumber(0);
+    EXPECT_EQ(0,res);
+
+
+    res=CalculateNthFibonacciNumber(1);
+    EXPECT_EQ(1,res);
+
+    res=CalculateNthFibonacciNumber(2);
+    EXPECT_EQ(1,res);
+
+    res=CalculateNthFibonacciNumber(3);
+    EXPECT_EQ(2,res);
+
+    res=CalculateNthFibonacciNumber(4);
+    EXPECT_EQ(3,res);
 
     res=CalculateNthFibonacciNumber(5);
-    EXPECT_EQ(res,5);
+    EXPECT_EQ(5,res);
+
+    res=CalculateNthFibonacciNumber(3);
+    EXPECT_EQ(2,res);
+
+    res=CalculateNthFibonacciNumber(0);
+    EXPECT_EQ(0,res);
+
+
+    res=CalculateNthFibonacciNumber(8);
+    EXPECT_EQ(21,res);
 
 }
 
+TEST(PadNumberWithZeroes,test1)
+{
+  std::string test=PadNumberWithZeroes(7);
+
+  EXPECT_EQ(test,std::string("0007"));
+
+  test=PadNumberWithZeroes(110);
+
+  EXPECT_EQ(test,std::string("0110"));
+
+  test=PadNumberWithZeroes(9110);
+
+  EXPECT_EQ(test,std::string("9110"));
+
+}
 
 
 TEST(ReverseString,reverse1)
