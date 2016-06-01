@@ -10,7 +10,6 @@
 #include "SimpleXML.hpp"
 #include "FileWatcher.h"
 #include <vector>
-#include <iostream>
 #include <strstream>
 #include <iostream>
 #include <sstream>

@@ -63,15 +63,15 @@ TEST(PadNumberWithZeroes,test1)
 {
   std::string test=PadNumberWithZeroes(7);
 
-  EXPECT_EQ(test,std::string("0007"));
+  EXPECT_EQ(std::string("0007"),test);
 
   test=PadNumberWithZeroes(110);
 
-  EXPECT_EQ(test,std::string("0110"));
+  EXPECT_EQ(std::string("0110"),test);
 
   test=PadNumberWithZeroes(9110);
 
-  EXPECT_EQ(test,std::string("9110"));
+  EXPECT_EQ(std::string("9110"),test);
 
 }
 
@@ -115,7 +115,7 @@ TEST(SelectPrimeNumbers,test1)
     testData.push_back(3);    testData.push_back(4);testData.push_back(7);
 
     std::vector<int> expectedResult;
-    expectedResult.push_back(3); ;expectedResult.push_back(7);
+    expectedResult.push_back(7);expectedResult.push_back(3); ;
 
     std::vector<int> result=SelectPrimeNumbers(testData);
 
@@ -124,23 +124,6 @@ TEST(SelectPrimeNumbers,test1)
 }
 
 
-TEST(SelectPrimeNumbers,out_of_range)
-{
-    std::vector<int> testData;
-    testData.push_back(3); testData.push_back(4);testData.push_back(7);
-    std::vector<int> result;
-
-    try {
-        result=SelectPrimeNumbers(testData);
-        FAIL() << "Expected std::out_of_range";
-    }
-    catch(std::out_of_range const & err) {
-        EXPECT_EQ(err.what(),std::string("Out of range"));
-    }
-    catch(...) {
-        FAIL() << "Expected std::out_of_range";
-    }
-}
 
 TEST(FindNthLargestNumber,test1)
 {
@@ -155,7 +138,8 @@ TEST(FindNthLargestNumber,test1)
 
 }
 
-
+//
+// Test out of range exception
 TEST(FindNthLargestNumber,out_of_range)
 {
     std::vector<int> testData;
