@@ -1,8 +1,8 @@
-
 #include <cstdint>
 #include <cassert>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 // Please implement the following functions.
 // Be dilleigent but don't be afraid to use a simple solution if you have one in mind.
@@ -34,6 +34,8 @@ bool IsLeapYear(int year) {
 // Find the N:th largest number in a range of numbers.
 int FindNthLargestNumber(const std::vector<int>& numbers, int nth_largest_number) {
     return 7;
+
+    // throw std::out_of_range("Out of range");
 }
 
 // Selects the prime numbers from a enumerable with numbers.
@@ -42,6 +44,7 @@ std::vector<int> SelectPrimeNumbers(const std::vector<int>& numbers) {
     ret.push_back(7);
     ret.push_back(5);
 
+    // throw std::out_of_range("Out of range");
     return(ret);
 }
 

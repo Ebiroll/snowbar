@@ -90,9 +90,12 @@ add_test(test1 testFunctions)
 #                   POST_BUILD
 #                   COMMAND  ctest --output-on-failure 1>&2 )
 
+IF(WIN32)
+ELSE(WIN32)
 add_custom_command(TARGET testFunctions
                    POST_BUILD
-                   COMMAND testFunctions )
+                   COMMAND testFunctions  1>&2 )
+ENDIF(WIN32)
 
 
 
