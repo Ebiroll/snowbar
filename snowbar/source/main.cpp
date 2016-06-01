@@ -80,6 +80,45 @@ bool fileExists(std::string fileName)
         return true;
     }
 }
+//-----------------------------------------------------------------------------
+// gets data for sending on single socket
+//-----------------------------------------------------------------------------
+std::string getData() {
+
+  std::string ret;
+  std::vector<XMLToken> myXml;
+    try {
+        myXml.clear();
+        {
+            XMLToken myTag("data",START_TAG);
+            myXml.push_back(myTag);
+
+            for (int i=0;i<gData.size();i++)
+            {
+                XmlLazyTag myTag("item", myXml);
+                {
+                    Serialize("label",gData[i].label.c_str(),myXml);
+                    Serialize("colour",gData[i].colour.c_str(),myXml);
+                    Serialize("value",gData[i].value.c_str(),myXml);
+                }
+            }
+            XMLToken endTag("data",END_TAG);
+            myXml.push_back(endTag);
+        }
+        XMLNode total(myXml.begin(),myXml.end()-1);
+        ret=total.toStringPretty(2);
+    } catch (XMLException e)
+    {
+        std::cerr << "Caught Xml exception "  << e.what();
+    }
+    catch( std::exception& e )
+    {
+        std::cerr <<  "An exception has occurred: " << e.what();
+    }
+
+  return ret;
+}
+
 
 //-----------------------------------------------------------------------------
 // parseFile, puts data from file into gData
@@ -118,46 +157,10 @@ void parseFile(std::string fileName)
         std::cerr << "No such file exists yet " << fileName << std::endl  ;
 
     }
-}
 
-//-----------------------------------------------------------------------------
-// gets data for sending on single socket
-//-----------------------------------------------------------------------------
-std::string getData() {
-
-  std::string ret;
-  std::vector<XMLToken> myXml;
-    try {
-        myXml.clear();
-        {
-            XMLToken myTag("data",START_TAG);
-            myXml.push_back(myTag);
-
-            for (int i=0;i<gData.size();i++)
-            {
-                XmlLazyTag myTag("item", myXml);
-                {
-                    Serialize("label",gData[i].label.c_str(),myXml);
-                    Serialize("colour",gData[i].colour.c_str(),myXml);
-                    Serialize("value",gData[i].value.c_str(),myXml);
-                }
-            }
-            XMLToken endTag("data",END_TAG);
-            myXml.push_back(endTag);
-        }
-        XMLNode total(myXml.begin(),myXml.end()-1);
-        ret=total.toString();
-    } catch (XMLException e)
-    {
-        std::cerr << "Caught Xml exception "  << e.what();
-    }
-    catch( std::exception& e )
-    {
-        std::cerr <<  "An exception has occurred: " << e.what();
-    }
-
-  std::cout << "xml" << ret << "\n\n exml";
-    return ret;
+    // Just to show that something has happened
+    std::string test=getData();
+    std::cout << test;
 }
 
 //-----------------------------------------------------------------------------

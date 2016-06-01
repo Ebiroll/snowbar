@@ -73,7 +73,8 @@ d3.custom.barChart = function module() {
                 .attr({x: chartW,
                     width: barW,
                     y: function(d, i) { return y1(d); },
-                    height: function(d, i) { return chartH - y1(d); }
+                    height: function(d, i) { return chartH - y1(d); },
+                    fill: function(d,i) {return barcolors[i]}  // barcolors[i]
                 })
                 .on('mouseover', dispatch.customHover);
             bars.transition()
