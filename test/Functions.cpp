@@ -12,13 +12,34 @@ namespace snow
 
 // Reverses a string.
 std::string ReverseString(const std::string& s) {
+    std::string input=s;
+    std::string ret;
+/* c++11
+    while (input.size()>0) {
+        ret.push_back(input.back());
+        input.pop_back();
+    }
+*/
+    // Skip NULL
+    for (int j=input.size()-1;j>=0;j--) {
+        ret.push_back(input[j]);
+    }
 
-    return ("Hello");
+    return (ret);
 }
 
 // Calculates the Nth fibonacci number.
 int CalculateNthFibonacciNumber(int n) {
-    // 0, 1 , 1 ,  2 , 3 ,5 Fn=Fn-1 + Fn-2
+    // 0, 1 , 1 ,  2 , 3 ,5, 8
+    //Fn=Fn-1 + Fn-2
+    assert(n>=0);
+    int F[3];
+
+    F[0]=1;
+    F[1]=1;
+    F[2]=2;
+
+    return(0);
 }
 
 // Pads a number with up to four zeroes.

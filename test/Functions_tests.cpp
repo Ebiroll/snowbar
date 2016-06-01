@@ -14,10 +14,25 @@ TEST(DISABLED_StringTest,sillyTest)
 
 
 TEST(MathTest, TwoPlusTwoEqualsFour) {
-        int i=18;
+        int i=17;
         EXPECT_EQ(2 + 2, 4) << "Text with better explanation" ;
         EXPECT_TRUE(i==17) << "i was not 17 it was " << i;
         //fprintf(stderr,"\n\n/home/olas/work/snowbar/test/Functions_tests.cpp:52:2:error:Test QT find line\n");
+}
+
+
+TEST(CalculateNthFibonacciNumber,test1) {
+    // 0, 1 , 1 ,  2 , 3 ,5, 8
+
+    int res=CalculateNthFibonacciNumber(3);
+    EXPECT_EQ(res,2);
+
+    res=CalculateNthFibonacciNumber(0);
+    EXPECT_EQ(res,2);
+
+    res=CalculateNthFibonacciNumber(5);
+    EXPECT_EQ(res,5);
+
 }
 
 
