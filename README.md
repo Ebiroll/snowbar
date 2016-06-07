@@ -1,5 +1,5 @@
 # snowbar
-Simple websocket server with some example client.
+Simple websocket server with an example websocket client.
 
 To build on linux,
 
