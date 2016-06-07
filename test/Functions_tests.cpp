@@ -6,7 +6,7 @@ using namespace snow;
 
 TEST(DISABLED_StringTest,sillyTest)
 {
-  char *test="This is just a silly example fail";
+  const char *test="This is just a silly example fail";
   EXPECT_STREQ("This is just a silly example",test) << "This is supposed to fail" ;
 
 }
@@ -27,6 +27,7 @@ TEST(CalculateNthFibonacciNumber,test1) {
     for (int i=0;i<10;i++) {
         std::cout << CalculateNthFibonacciNumber(i) << "," ;
     }
+     std::cout << "\n";
 
     int res=CalculateNthFibonacciNumber(0);
     EXPECT_EQ(0,res);
@@ -73,6 +74,11 @@ TEST(PadNumberWithZeroes,test1)
 
   EXPECT_EQ(std::string("9110"),test);
 
+  test=PadNumberWithZeroes(9999);
+
+  EXPECT_EQ(std::string("9999"),test);
+
+
 }
 
 
@@ -106,6 +112,11 @@ TEST(IsLeapYear,test1)
       EXPECT_TRUE(IsLeapYear(2020)) << "2020 is a leapyear ";
 
       EXPECT_FALSE(IsLeapYear(2017)) << "2017 is not a leapyear ";
+
+      EXPECT_TRUE(IsLeapYear(2000)) << "2000 is  a leapyear ";
+
+      EXPECT_FALSE(IsLeapYear(1900)) << "1900 is not a leapyear ";
+
 
 }
 
@@ -144,10 +155,10 @@ TEST(FindNthLargestNumber,out_of_range)
 {
     std::vector<int> testData;
     testData.push_back(3); testData.push_back(4);testData.push_back(7);
-    int result;
 
     try {
-         result=FindNthLargestNumber(testData,47);
+        int result=FindNthLargestNumber(testData,47);
+        (void)result; // Silence the warning
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
