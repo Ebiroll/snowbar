@@ -1,0 +1,7 @@
+#A:red:100
+#B:blue:40
+#C:cyan:30
+#R:red:40
+#F:black:80
+#G:green:80
+#T:blue:20
