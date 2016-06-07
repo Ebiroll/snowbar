@@ -7,8 +7,10 @@ enable_testing()
 
 
 IF(WIN32)
+ADD_DEFINITIONS(-D WIN32 )
+set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11 -static-libstdc++")
 ELSE(WIN32)
-set(CMAKE_CXX_FLAGS "-g -Wall -std=c++0x")
+set(CMAKE_CXX_FLAGS "-g -Wall -std=c++11")
 ENDIF(WIN32)
 
 
@@ -91,6 +93,10 @@ add_test(test1 testFunctions)
 #                   COMMAND  ctest --output-on-failure 1>&2 )
 
 IF(WIN32)
+add_custom_command(TARGET testFunctions
+                   POST_BUILD
+                   COMMAND testFunctions  1>&2 )
+
 ELSE(WIN32)
 add_custom_command(TARGET testFunctions
                    POST_BUILD

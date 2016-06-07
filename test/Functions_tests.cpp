@@ -128,11 +128,11 @@ TEST(SelectPrimeNumbers,test1)
 TEST(FindNthLargestNumber,test1)
 {
     std::vector<int> testData;
-    testData.push_back(3); testData.push_back(4);testData.push_back(7);
+    testData.push_back(0);testData.push_back(1);testData.push_back(3); testData.push_back(4);testData.push_back(7);
 
     int expectedResult=4;
 
-    int result=FindNthLargestNumber(testData,2);
+    int result=FindNthLargestNumber(testData,1);
 
     EXPECT_EQ(expectedResult,result);
 
